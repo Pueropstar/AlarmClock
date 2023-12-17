@@ -123,4 +123,71 @@ void *readTempFunc(void*); // 온도 읽기 함수
 
 ### 뮤텍스 관련 구현 내용
 
+```c
+// ...
+int isRinging = 0; // 0일때 알람 울리고 있지 않음, 1일때 알람 울리는중
+int currentShow = 0; // 0일때 시간, 1일때 온도
+int alarmActive = 0; // 0일때 알람 설정 안됨, 1일때 설정됨
+// ...
+```
+
+프로그램에서 사용하는 공유 변수들이다
+
+```c
+// ...
+    if(strcmp(buffer, currentTime) > 0) //현재 시간보다 더 이후인지
+    {
+      pthread_mutex_lock(&lock);
+      strcpy(alarmTime, buffer);  // 알람 시간 저장
+      alarmActive = 1;  // 알람 활성화
+      pthread_mutex_unlock(&lock);
+      printFormattedTime(buffer);
+      printf("%s 알람을 취소하고 싶으시면 취소\n", alarmTime);
+    }
+// ...
+```
+블루투스의 입력 처리를 하는 inputFunc의 일부
+
+```c
+        if (alarmActive && strcmp(currentTime, alarmTime) == 0)
+        {
+            pthread_mutex_lock(&lock);
+            isRinging = 1;
+            pthread_mutex_unlock(&lock);
+            // ...
+        }
+```
+알람을 울리는 함수인 alarmFunc의 일부
+
+
+```c
+        if(detectionAlarmOff==LOW){
+            
+            if(isRinging){
+                pthread_mutex_lock(&lock);
+                isRinging = 0;
+                alarmActive =0;
+                pthread_mutex_unlock(&lock);
+            }
+            else{
+                printf("울리고 있는 알림이 없습니다! \n");
+            }
+        }
+```
+
+스위치 처리를 하는 btnFunc의 일부
+
+**위의 alarmActive와 isRinging은 다른 쓰레드에서도 사용하기 때문에 충돌을 방지하기 위하여 뮤텍스 lock을 걸고 처리한다.**
+
+# 데모 영상
+
++ 알람 시연
+  https://youtu.be/-FSf1KY0SdY
++ 모드 시연
+  https://youtu.be/bM6fxsMUYrk
+
+
+
+
+
 
