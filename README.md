@@ -182,9 +182,9 @@ int alarmActive = 0; // 0일때 알람 설정 안됨, 1일때 설정됨
 # 데모 영상
 
 + 알람 시연
-  https://youtu.be/-FSf1KY0SdY
+  [![image](https://github.com/Pueropstar/AlarmClock/assets/109838831/5f82877f-d958-492c-af86-5e9db7b73426)](https://youtu.be/-FSf1KY0SdY)
 + 모드 시연
-  https://youtu.be/bM6fxsMUYrk
+  [![image](https://github.com/Pueropstar/AlarmClock/assets/109838831/19baac2c-b0a6-432a-ae2c-f92b9c11f580)](https://youtu.be/bM6fxsMUYrk)
 
 
 
